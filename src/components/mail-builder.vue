@@ -11,7 +11,7 @@
                 @create-title-block="addTitleBlock"
                 @create-content-block="addContentBlock"
               ></new-block-creator>
-              <table v-for="(block, index) in orderedBlocks" :key="index" draggable="true">
+              <table v-for="(block, index) in orderedBlocks" :key="index">
                 <tbody>
                   <tr>
                     <td>
@@ -20,7 +20,7 @@
                         @create-title-block="addTitleBlock"
                         @create-content-block="addContentBlock"
                       ></new-block-creator>
-                      <div class="mail-builder__block-container">
+                      <div class="mail-builder__block-container" draggable="true" @dragstart="startDrag($event, block)" @drop="onDrop($event, block)" @dragover.prevent @dragenter.prevent>
                         <div class="mail-builder__change-position">
                           <button
                             class="mail-builder__change-position-button" 
@@ -69,13 +69,13 @@ import JsonPreview from "./json-preview";
 import NewBlockCreator from "./new-block-creator";
 import MailBlockWrapper from "./mail-block-wrapper";
 import { createNewMailBlock } from "../helpers";
-import MAIL_BLOCK_TYPES from '../constants/mail-block-types';
+import MAIL_BLOCK_TYPES from "../constants/mail-block-types";
 
 export default {
   name: "MailBuilder",
 
   components: { JsonPreview, NewBlockCreator, MailBlockWrapper },
-  
+
   data() {
     return {
       jsonPreviewActive: false,
@@ -106,6 +106,18 @@ export default {
   },
 
   methods: {
+    startDrag(event, block) {
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", block.id);
+    },
+
+    onDrop(event, block) {
+      const itemID = event.dataTransfer.getData("text");
+      const replaceBlock = this.mail.blocks.find(block => block.id === itemID);
+      this.updateBlockPosition(block, replaceBlock.position);
+    },
+
     saveMailToLocalStorage() {
       localStorage.setItem("MAIL_BUILDER_LOCAL_STORAGE_STATE", JSON.stringify(this.mail));
     },
