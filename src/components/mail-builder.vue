@@ -11,7 +11,7 @@
                 @create-title-block="addTitleBlock"
                 @create-content-block="addContentBlock"
               ></new-block-creator>
-              <table v-for="(block, index) in orderedBlocks" :key="index">
+              <table v-for="(block, index) in orderedBlocks" :key="index" draggable="true">
                 <tbody>
                   <tr>
                     <td>
