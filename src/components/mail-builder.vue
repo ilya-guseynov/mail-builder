@@ -67,9 +67,9 @@
 <script>
 import JsonPreview from "./json-preview";
 import NewBlockCreator from "./new-block-creator";
-import MailBlockWrapper from "./mail-block-wrapper";
-import { createNewMailBlock } from "../helpers";
+import MailBlockWrapper from "./mail-blocks/mail-block-wrapper";
 import MAIL_BLOCK_TYPES from "../constants/mail-block-types";
+import { createNewMailBlock } from "../helpers";
 
 export default {
   name: "mail-builder",
