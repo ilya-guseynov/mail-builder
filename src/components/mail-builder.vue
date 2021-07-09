@@ -72,7 +72,7 @@ import { createNewMailBlock } from "../helpers";
 import MAIL_BLOCK_TYPES from "../constants/mail-block-types";
 
 export default {
-  name: "MailBuilder",
+  name: "mail-builder",
 
   components: { JsonPreview, NewBlockCreator, MailBlockWrapper },
 

@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "JsonPreview",
+  name: "json-preview",
 
   props: {
     mail: { type: Object, required: true },

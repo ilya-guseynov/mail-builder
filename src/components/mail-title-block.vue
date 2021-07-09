@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "MailTitleBlock",
+  name: "mail-title-block",
 
   props: {
     block: { type: Object, required: true },

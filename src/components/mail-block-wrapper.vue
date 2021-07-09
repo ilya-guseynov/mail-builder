@@ -12,7 +12,7 @@ import MailTitleBlock from "./mail-title-block";
 import MAIL_BLOCK_TYPES from "../constants/mail-block-types";
 
 export default {
-  name: "MailBlockWrapper",
+  name: "mail-block-wrapper",
 
   components: { MailTitleBlock },
 

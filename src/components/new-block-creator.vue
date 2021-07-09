@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "NewBlockCreator",
+  name: "new-block-creator",
 
   props: {
     position: { type: Number, required: true },
