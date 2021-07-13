@@ -2,18 +2,20 @@
   <mail-title-block 
     v-if="isTitleBlock" 
     :block="block"
-    @content-update="handleContentUpdate"
+    @content-update="updateBlockContent"
   ></mail-title-block>
   <mail-content-block 
     v-else-if="isContentBlock" 
     :block="block"
+    @content-update="updateBlockContent"
   ></mail-content-block>
+  <div v-else>Блок {{ block.type }} еще не реализован</div>
 </template>
 
 <script>
 import MailTitleBlock from "./mail-title-block";
 import MailContentBlock from "./mail-content-block";
-import MAIL_BLOCK_TYPES from "../../constants/mail-block-types";
+import { MAIL_BLOCK_TYPES } from "../../constants";
 
 export default {
   name: "mail-block-wrapper",
@@ -35,7 +37,7 @@ export default {
   },
 
   methods: {
-    handleContentUpdate(event, updateBlock, newValue) {
+    updateBlockContent(event, updateBlock, newValue) {
       this.$emit("content-update", updateBlock, newValue);
     },
   },

@@ -1,26 +1,33 @@
 <template>
   <div class="mail-builder">
     <div class="mail-builder__workspace">
-      <table>
+      <table style="border-spacing:0;">
         <tbody>
           <tr>
-            <td>
+            <td style="padding:0;">
               <new-block-creator
                 v-if="!hasBlocks"
                 :position="0"
                 @create-title-block="addTitleBlock"
                 @create-content-block="addContentBlock"
               ></new-block-creator>
-              <table v-for="(block, index) in orderedBlocks" :key="index">
+              <table style="border-spacing:0;" v-for="block in orderedBlocks" :key="block.id">
                 <tbody>
                   <tr>
-                    <td>
+                    <td style="padding:0;">
                       <new-block-creator
                         :position="block.position"
                         @create-title-block="addTitleBlock"
                         @create-content-block="addContentBlock"
                       ></new-block-creator>
-                      <div class="mail-builder__block-container" draggable="true" @dragstart="startDrag($event, block)" @drop="onDrop($event, block)" @dragover.prevent @dragenter.prevent>
+                      <div 
+                        class="mail-builder__block-container" 
+                        draggable="true" 
+                        @dragstart="startDrag($event, block)" 
+                        @drop="onDrop($event, block)" 
+                        @dragover.prevent 
+                        @dragenter.prevent
+                      >
                         <div class="mail-builder__change-position">
                           <button
                             class="mail-builder__change-position-button" 
@@ -68,8 +75,8 @@
 import JsonPreview from "./json-preview";
 import NewBlockCreator from "./new-block-creator";
 import MailBlockWrapper from "./mail-blocks/mail-block-wrapper";
-import MAIL_BLOCK_TYPES from "../constants/mail-block-types";
 import { createNewMailBlock } from "../helpers";
+import { MAIL_BLOCK_TYPES } from "../constants";
 
 export default {
   name: "mail-builder",

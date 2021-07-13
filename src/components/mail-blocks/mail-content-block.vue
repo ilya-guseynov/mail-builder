@@ -1,9 +1,12 @@
 <template>
-  <table>
+  <table style="background:#eeeeee; padding:32px;">
     <tbody>
       <tr>
-        <td>
-          <table></table>
+        <td v-for="block in blocks" :key="block.id">
+          <content-item-wrapper
+            :block="block"
+            @content-update="updateBlockContent"
+          ></content-item-wrapper>
         </td>
       </tr>
     </tbody>
@@ -11,8 +14,12 @@
 </template>
 
 <script>
+import ContentItemWrapper from "../content-items/content-item-wrapper";
+
 export default {
   name: "mail-content-block",
+
+  components: { ContentItemWrapper },
 
   props: {
     block: { type: Object, required: true },
@@ -23,6 +30,12 @@ export default {
   computed: {
     blocks() {
       return this.block.content;
+    },
+  },
+
+  methods: {
+    updateBlockContent(event, updateBlock, newValue) {
+      this.$emit("content-update", updateBlock, newValue);
     },
   },
 };

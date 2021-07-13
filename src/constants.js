@@ -1,0 +1,31 @@
+const MAIL_BLOCK_DEFAULT_VALUES = {
+  TITLE_BLOCK: "Новый заголовок",
+  SMALL_TITLE_BLOCK: "Новый маленький заголовок",
+  TEXT_BLOCK: "Новый параграф",
+  TEXT_PART_BLOCK: "Новый текст",
+  IMAGE_BLOCK: "https://medialeaks.ru/wp-content/uploads/2017/10/catbread-03-600x400.jpg",
+};
+
+const MAIL_BLOCK_TYPES = {
+  TITLE_BLOCK: "TITLE_BLOCK",
+  CONTENT_BLOCK: "CONTENT_BLOCK",
+};
+
+const CONTENT_ITEM_TYPE = {
+  SMALL_TITLE_BLOCK: "SMALL_TITLE_BLOCK",
+  TEXT_BLOCK: "TEXT_BLOCK",
+  IMAGE_BLOCK: "IMAGE_BLOCK",
+  DIVIDER_BLOCK: "DIVIDER_BLOCK",
+};
+
+const TEXT_ITEM_TYPE = {
+  TEXT_PART_BLOCK: "TEXT_PART_BLOCK",
+  TEXT_LINK_BLOCK: "TEXT_LINK_BLOCK",
+};
+
+export { 
+  MAIL_BLOCK_DEFAULT_VALUES, 
+  MAIL_BLOCK_TYPES, 
+  CONTENT_ITEM_TYPE, 
+  TEXT_ITEM_TYPE 
+};
