@@ -1,201 +1,151 @@
 <template>
   <div class="mail-builder">
-    <div class="mail-builder__workspace">
-      <table style="border-spacing:0;">
-        <tbody>
-          <tr>
-            <td style="padding:0;">
-              <new-block-creator
-                v-if="!hasBlocks"
-                :position="0"
-                @create-title-block="addTitleBlock"
-                @create-content-block="addContentBlock"
-              ></new-block-creator>
-              <table style="border-spacing:0;" v-for="block in orderedBlocks" :key="block.id">
-                <tbody>
-                  <tr>
-                    <td style="padding:0;">
-                      <new-block-creator
-                        :position="block.position"
-                        @create-title-block="addTitleBlock"
-                        @create-content-block="addContentBlock"
-                      ></new-block-creator>
-                      <div 
-                        class="mail-builder__block-container" 
-                        draggable="true" 
-                        @dragstart="startDrag($event, block)" 
-                        @drop="onDrop($event, block)" 
-                        @dragover.prevent 
-                        @dragenter.prevent
-                      >
-                        <div class="mail-builder__change-position">
-                          <button
-                            class="mail-builder__change-position-button" 
-                            v-if="block.position > 0"
-                            @click="updateBlockPosition(block, block.position - 1)"
-                          >↑</button>
-                          <button 
-                            class="mail-builder__change-position-button"
-                            v-if="block.position < blocksCount - 1"
-                            @click="updateBlockPosition(block, block.position + 1)"
-                          >↓</button>
-                        </div>
-                        <div class="mail-builder__remove-button-container">
-                          <button class="mail-builder__remove-button" @click="removeBlock(block.position)">X</button>
-                        </div>
-                        <mail-block-wrapper
-                          :block="block"
-                          @content-update="updateBlockContent"
-                        ></mail-block-wrapper>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <new-block-creator
-                v-if="hasBlocks"
-                :position="blocksCount"
-                @create-title-block="addTitleBlock"
-                @create-content-block="addContentBlock"
-              ></new-block-creator>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-if="!hasBlocks">Создайте свой первый блок выше.</div>
+    <div class="mail-builder__workspace-container">
+      <mail-workspace
+        :mailBlocks="mailBlocks"
+        @add-mail-block="addMailBlock"
+        @remove-mail-block="removeMailBlock"
+        @update-mail-block-content="updateMailBlockContent"
+        @update-mail-block-position="updateMailBlockPosition"
+      ></mail-workspace>
     </div>
-    <div class="mail-builder__preview-triggers">
-      <button class="mail-builder__preview-trigger" @click="setJsonPreviewStatus(true)">Посмотреть JSON</button>
-    </div>
-    <json-preview v-if="jsonPreviewActive" :mail="mail" @close-preview="setJsonPreviewStatus(false)"></json-preview>
+    <mail-preview :mailBlocks="mailBlocks"></mail-preview>
   </div>
 </template>
 
 <script>
-import JsonPreview from "./json-preview";
-import NewBlockCreator from "./new-block-creator";
-import MailBlockWrapper from "./mail-blocks/mail-block-wrapper";
-import { createNewMailBlock } from "../helpers";
-import { MAIL_BLOCK_TYPES } from "../constants";
+import MailWorkspace from "./mail-workspace";
+import MailPreview from "./mail-preview";
+import { createMailBlock } from "../mail-create-functions";
 
 export default {
   name: "mail-builder",
 
-  components: { JsonPreview, NewBlockCreator, MailBlockWrapper },
+  components: {
+    MailWorkspace,
+    MailPreview,
+  },
 
   data() {
     return {
-      jsonPreviewActive: false,
-      mail: {
-        blocks: [],
-      },
+      mailBlocks: [],
     };
   },
 
-  computed: {
-    orderedBlocks() {
-      const blocksCopy = [...this.mail.blocks];
-      blocksCopy.sort((firstBlock, secondBlock) => (firstBlock.position - secondBlock.position));
-      return blocksCopy;
-    },
-
-    hasBlocks() {
-      return this.mail.blocks.length > 0;
-    },
-
-    blocksCount() {
-      return this.mail.blocks.length;
-    },
-  },
-
   mounted() {
-    this.loadMailFromLocalStorage();
+    this.loadMailBlocksFromLocalStorage();
   },
 
   methods: {
-    startDrag(event, block) {
-      event.dataTransfer.dropEffect = "move";
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("text/plain", block.id);
+    /**
+     * Adds new mail block object if provided type is correct.
+     * 
+     * Increases all blocks positions below new position by 1.
+     *
+     * @param { string } newMailBlockType
+     * @param { number } newMailBlockPosition
+     * @returns { void }
+     */
+    addMailBlock(newMailBlockType, newMailBlockPosition) {
+      const newMailBlock = createMailBlock(newMailBlockType, newMailBlockPosition);
+
+      if (newMailBlock) {
+        for (let block of this.mailBlocks) {
+          if (block.position >= newMailBlockPosition) {
+            block.position += 1;
+          }
+        }
+
+        this.mailBlocks.push(newMailBlock);
+        this.saveMailBlocksToLocalStorage();
+      }
     },
 
-    onDrop(event, block) {
-      const itemID = event.dataTransfer.getData("text");
-      const replaceBlock = this.mail.blocks.find(block => block.id === itemID);
-      this.updateBlockPosition(block, replaceBlock.position);
+    /**
+     * Removes mail block with provided position.
+     * 
+     * Decreases all blocks position below remove positon bu 1.
+     *
+     * @param { number } blockToRemovePosition
+     * @returns { void }
+     */
+    removeMailBlock(blockToRemovePosition) {
+      this.mailBlocks = this.mailBlocks.filter(block => block.position !== blockToRemovePosition);
+
+      for (let block of this.mailBlocks) {
+        if (block.position > blockToRemovePosition) {
+          block.position -= 1;
+        }
+      }
+
+      this.saveMailBlocksToLocalStorage();
     },
 
-    saveMailToLocalStorage() {
+    /**
+     * Update provided mail block with provided content.
+     *
+     * Removes mail block if new content is empty string.
+     *
+     * @param { object } blockToUpdate
+     * @param { string } blockToUpdate.id
+     * @param { string | object | Array } newContent
+     * @returns { void }
+     */
+    updateMailBlockContent(blockToUpdate, newContent) {
+      for (let block of this.mailBlocks) {
+        if (block.id === blockToUpdate.id) {
+          block.content = newContent;
+
+          if (newContent === "") {
+            this.removeBlock(blockToUpdate.position);
+          }
+        }
+      }
+
+      this.saveMailBlocksToLocalStorage();
+    },
+
+    /**
+     * Changes positions of provided block and block with provided position.
+     *
+     * @param { object } blockToUpdate
+     * @param { string } blockToUpdate.id
+     * @param { number } blockToUpdate.position
+     * @param { number } newPosition
+     * @returns { void }
+     */
+    updateMailBlockPosition(blockToUpdate, newPosition) {
+      for (let block of this.mailBlocks) {
+        if (block.position === newPosition) {
+          block.position = blockToUpdate.position;
+        }
+      }
+
+      for (let block of this.mailBlocks) {
+        if (block.id === blockToUpdate.id) {
+          block.position = newPosition;
+        }
+      }
+
+      this.saveMailBlocksToLocalStorage();
+    },
+
+    /**
+     * Saves current status of mail blocks to local storage.
+     */
+    saveMailBlocksToLocalStorage() {
       localStorage.setItem("MAIL_BUILDER_LOCAL_STORAGE_STATE", JSON.stringify(this.mail));
     },
 
-    loadMailFromLocalStorage() {
+    /**
+     * Tries to get mail blocks data from local storage and set it to local state if there is data.
+     */
+    loadMailBlocksFromLocalStorage() {
       const mailFromLocalStorage = localStorage.getItem("MAIL_BUILDER_LOCAL_STORAGE_STATE");
 
       if (mailFromLocalStorage) {
         this.mail = JSON.parse(mailFromLocalStorage);
       }
-    },
-
-    updatePositions(newPosition) {
-      for (let block of this.mail.blocks) {
-        if (block.position >= newPosition) {
-          block.position += 1;
-        }
-      }
-    },
-
-    addTitleBlock(addPosition) {
-      this.updatePositions(addPosition);
-      this.mail.blocks.push(createNewMailBlock(MAIL_BLOCK_TYPES.MAIL_TITLE_BLOCK, addPosition));
-      this.saveMailToLocalStorage();
-    },
-
-    addContentBlock(addPosition) {
-      this.updatePositions(addPosition);
-      this.mail.blocks.push(createNewMailBlock(MAIL_BLOCK_TYPES.MAIL_CONTENT_BLOCK, addPosition));
-      this.saveMailToLocalStorage();
-    },
-
-    updateBlockContent(updateBlock, newContent) {
-      for (let block of this.mail.blocks) {
-        if (block.id === updateBlock.id) {
-          block.content = newContent;
-
-          if (newContent === "") {
-            this.removeBlock(updateBlock.position);
-          }
-        }
-      }
-      this.saveMailToLocalStorage();
-    },
-
-    updateBlockPosition(updateBlock, newPosition) {
-      for (let block of this.mail.blocks) {
-        if (block.position === newPosition) {
-          block.position = updateBlock.position;
-        }
-      }
-      for (let block of this.mail.blocks) {
-        if (block.id === updateBlock.id) {
-          block.position = newPosition;
-        }
-      }
-      this.saveMailToLocalStorage();
-    },
-
-    removeBlock(removePosition) {
-      this.mail.blocks = this.mail.blocks.filter(block => block.position !== removePosition);
-      for (let block of this.mail.blocks) {
-        if (block.position > removePosition) {
-          block.position -= 1;
-        }
-      }
-      this.saveMailToLocalStorage();
-    },
-
-    setJsonPreviewStatus(active) {
-      this.jsonPreviewActive = active;
     },
   },
 };
@@ -208,116 +158,13 @@ export default {
   align-items: center;
   justify-content: center;
 
-  &__workspace {
+  &__workspace-container {
     width: 100%;
+    max-width: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-  }
-
-  & table {
-    width: 100%;
-    max-width: 600px;
-  }
-
-  &__preview-triggers {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-  }
-
-  &__preview-trigger {
-    border: none;
-    background: none;
-    outline: none;
-    cursor: pointer;
-    transition: all .5s;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 5px;
-    font-size: 14px;
-
-    &:hover {
-      border-bottom: 1px solid gray;
-    }
-
-    &:not(:last-child) {
-      margin-right: 20px;
-    }
-  }
-
-  &__block-container {
-    position: relative;
-
-    &:hover .mail-builder__remove-button {
-      opacity: 1;
-    }
-
-    &:hover .mail-builder__change-position {
-      opacity: 1;
-    }
-  }
-
-  &__remove-button-container {
-    position: absolute;
-    left: 0;
-    transform: translateX(-100%);
-    padding-right: 10px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  &__remove-button {
-    height: 20px;
-    font-size: 20px;
-    width: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background: none;
-    color: black;
-    opacity: 0;
-    transition: all .2s;
-
-    &:hover {
-      background: rgb(236, 236, 236);
-    }
-  }
-
-  &__change-position {
-    position: absolute;
-    left: 0;
-    transform: translateX(-100%);
-    padding-right: 40px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    opacity: 0;
-    transition: all .2s;
-  }
-
-  &__change-position-button {
-    height: 20px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background: none;
-    color: black;
-    transition: all .2s;
-
-    &:hover {
-      background: rgb(236, 236, 236);
-    }
   }
 }
 </style>
