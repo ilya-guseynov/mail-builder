@@ -1,8 +1,8 @@
 <template>
-  <div class="new-block-creator" @mouseleave="hideCreationButtonsOnMouseLeave">
+  <div class="new-block-creator" @mouseleave="hideCreationButtonsWithDelay">
     <div class="new-block-creator__creation-buttons-container" v-if="creationButtonsShowed">
-      <button class="new-block-creator__creation-button" @click="createTitleBlock">Заголовок</button>
-      <button class="new-block-creator__creation-button" @click="createContentBlock">Контент</button>
+      <button class="new-block-creator__creation-button" @click="emitCreateTitleBlock">Заголовок</button>
+      <button class="new-block-creator__creation-button" @click="emitCreateContentBlock">Контент</button>
     </div>
     <div class="new-block-creator__trigger-container" v-else>
       <button class="new-block-creator__trigger" @click="showCreationButtons">+</button>
@@ -11,14 +11,20 @@
 </template>
 
 <script>
+import { MAIL_BLOCK_TYPES } from '../constants';
 export default {
   name: "new-block-creator",
 
   props: {
-    position: { type: Number, required: true },
+    position: {
+      type: Number,
+      required: true,
+    },
   },
 
-  emits: [ "create-title-block", "create-content-block" ],
+  emits: [
+    "create-mail-block",
+  ],
 
   data() {
     return {
@@ -27,22 +33,34 @@ export default {
   },
 
   methods: {
+    /**
+     * Show creation buttons.
+     */
     showCreationButtons() {
       this.creationButtonsShowed = true;
     },
 
-    hideCreationButtonsOnMouseLeave() {
+    /**
+     * Hide creation buttons after time, that equals to hover transition of opacity.
+     */
+    hideCreationButtonsWithDelay() {
       setTimeout(() => {
         this.creationButtonsShowed = false;
       }, 200);
     },
 
-    createTitleBlock() {
-      this.$emit("create-title-block", this.position);
+    /**
+     * Emits to parent component, that title block must be created.
+     */
+    emitCreateTitleBlock() {
+      this.$emit("create-mail-block", MAIL_BLOCK_TYPES.TITLE_BLOCK, this.position);
     },
 
-    createContentBlock() {
-      this.$emit("create-content-block", this.position);
+    /**
+     * Emits to parent component, that content block must be created.
+     */
+    emitCreateContentBlock() {
+      this.$emit("create-mail-block", MAIL_BLOCK_TYPES.CONTENT_BLOCK, this.position);
     },
   },
 };
@@ -54,7 +72,7 @@ export default {
   background: rgb(236, 236, 236);
   opacity: 0;
   transition: all .2s;
-  
+
   &:hover {
     opacity: 1;
   }
