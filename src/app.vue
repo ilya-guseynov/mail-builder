@@ -10,8 +10,11 @@
 import MailBuilder from "./components/mail-builder";
 
 export default {
-  name: "App",
-  components: { MailBuilder },
+  name: "app",
+
+  components: {
+    MailBuilder,
+  },
 };
 </script>
 
