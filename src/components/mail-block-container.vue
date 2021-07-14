@@ -27,7 +27,7 @@
             <div class="mail-block-container__remove-button-container">
               <button class="mail-block-container__remove-button" @click="emitRemoveMailBlock">X</button>
             </div>
-            <div>{{ mailBlock.type }}</div>
+            <mail-block-wrapper :mail-block="mailBlock" @content-update="emitUpdateMailBlockContent"></mail-block-wrapper>
           </td>
         </tr>
       </tbody>
@@ -36,12 +36,19 @@
 </template>
 
 <script>
+import MailBlockWrapper from "./mail-blocks/mail-block-wrapper";
+
 export default {
   name: "mail-block-container",
+
+  components: {
+    MailBlockWrapper,
+  },
 
   emits: [
     "remove-mail-block",
     "update-mail-block-position",
+    "update-mail-block-content",
   ],
 
   props: {
@@ -67,6 +74,15 @@ export default {
      */
     emitRemoveMailBlock() {
       this.$emit("remove-mail-block");
+    },
+
+    /**
+     * Emits to parent component, that current component content must be changed to new one.
+     *
+     * @param { string | Array | object } newContent
+     */
+    emitUpdateMailBlockContent(newContent) {
+      this.$emit("update-mail-block-content", this.mailBlock, newContent);
     },
 
     /**
