@@ -8,7 +8,7 @@
 
 <script>
 import MailTitleBlock from "./mail-title-block";
-// import MailContentBlock from "./mail-content-block";
+import MailContentBlock from "./mail-content-block";
 import MailUnknownBlock from './mail-unknown-block';
 import { MAIL_BLOCK_TYPES } from "../../constants";
 
@@ -29,6 +29,8 @@ export default {
     currentMailBlockComponent() {
       if (this.mailBlock.type === MAIL_BLOCK_TYPES.TITLE_BLOCK) {
         return MailTitleBlock;
+      } else if (this.mailBlock.type === MAIL_BLOCK_TYPES.CONTENT_BLOCK) {
+        return MailContentBlock;
       } else {
         return MailUnknownBlock;
       }

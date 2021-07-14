@@ -42,12 +42,19 @@ export default {
       },
 
       set(newValue) {
-        this.$emit("content-update", newValue);
+        this.emitContentUpdate(newValue); 
       },
     },
   },
 
   methods: {
+    /**
+     * Emits to parent component, that content must be updated with new data.
+     */
+    emitContentUpdate(newContent) {
+      this.$emit("content-update", newContent);
+    },
+
     /**
      * Changes editing status to shows input element instead of span and focuses on this input.
      */
