@@ -94,7 +94,7 @@ export default {
           block.content = newContent;
 
           if (newContent === "") {
-            this.removeBlock(blockToUpdate.position);
+            this.removeMailBlock(blockToUpdate.position);
           }
         }
       }
