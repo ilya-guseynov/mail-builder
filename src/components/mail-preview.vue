@@ -7,7 +7,7 @@
   </div>
   <json-preview 
     v-if="jsonPreviewActive" 
-    :mailBlocks="mailBlocks" 
+    :mail-blocks="mailBlocks" 
     @close-preview="setJsonPreviewStatus(false)"
   ></json-preview>
 </template>

@@ -18,7 +18,9 @@ export default {
     },
   },
 
-  emits: [ "close-preview" ],
+  emits: [ 
+    "close-preview" 
+  ],
 
   computed: {
     prettyFormatedMail() {

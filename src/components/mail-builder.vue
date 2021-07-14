@@ -2,7 +2,7 @@
   <div class="mail-builder">
     <div class="mail-builder__workspace-container">
       <mail-workspace
-        :mailBlocks="mailBlocks"
+        :mail-blocks="mailBlocks"
         @add-mail-block="addMailBlock"
         @remove-mail-block="removeMailBlock"
         @update-mail-block-content="updateMailBlockContent"
@@ -39,12 +39,11 @@ export default {
   methods: {
     /**
      * Adds new mail block object if provided type is correct.
-     * 
+     *
      * Increases all blocks positions below new position by 1.
      *
      * @param { string } newMailBlockType
      * @param { number } newMailBlockPosition
-     * @returns { void }
      */
     addMailBlock(newMailBlockType, newMailBlockPosition) {
       const newMailBlock = createMailBlock(newMailBlockType, newMailBlockPosition);
@@ -63,11 +62,10 @@ export default {
 
     /**
      * Removes mail block with provided position.
-     * 
+     *
      * Decreases all blocks position below remove positon bu 1.
      *
      * @param { number } blockToRemovePosition
-     * @returns { void }
      */
     removeMailBlock(blockToRemovePosition) {
       this.mailBlocks = this.mailBlocks.filter(block => block.position !== blockToRemovePosition);
@@ -89,7 +87,6 @@ export default {
      * @param { object } blockToUpdate
      * @param { string } blockToUpdate.id
      * @param { string | object | Array } newContent
-     * @returns { void }
      */
     updateMailBlockContent(blockToUpdate, newContent) {
       for (let block of this.mailBlocks) {
@@ -112,7 +109,6 @@ export default {
      * @param { string } blockToUpdate.id
      * @param { number } blockToUpdate.position
      * @param { number } newPosition
-     * @returns { void }
      */
     updateMailBlockPosition(blockToUpdate, newPosition) {
       for (let block of this.mailBlocks) {
@@ -134,7 +130,7 @@ export default {
      * Saves current status of mail blocks to local storage.
      */
     saveMailBlocksToLocalStorage() {
-      localStorage.setItem("MAIL_BUILDER_LOCAL_STORAGE_STATE", JSON.stringify(this.mail));
+      localStorage.setItem("MAIL_BUILDER_LOCAL_STORAGE_STATE", JSON.stringify(this.mailBlocks));
     },
 
     /**
@@ -144,7 +140,7 @@ export default {
       const mailFromLocalStorage = localStorage.getItem("MAIL_BUILDER_LOCAL_STORAGE_STATE");
 
       if (mailFromLocalStorage) {
-        this.mail = JSON.parse(mailFromLocalStorage);
+        this.mailBlocks = JSON.parse(mailFromLocalStorage);
       }
     },
   },
