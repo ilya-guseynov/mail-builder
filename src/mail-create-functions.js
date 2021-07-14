@@ -10,13 +10,13 @@ import {
 
 /**
  * Creates new mail block object based on provided type and order position.
- * 
+ *
  * Returns `null` if incorrect type provided or position is not number or less than 0.
  *
  * @param { string } newMailBlockType
- * 
+ *
  * @param { number } newMailBlockPosition
- * 
+ *
  * @returns { { id: string, position: number, type: string, content: string | Array } | null }
  */
 function createMailBlock(newMailBlockType, newMailBlockPosition) {
@@ -29,7 +29,7 @@ function createMailBlock(newMailBlockType, newMailBlockPosition) {
   if (newMailBlockType === MAIL_BLOCK_TYPES.TITLE_BLOCK) {
     newMailBlockContent = MAIL_BLOCK_DEFAULT_VALUES.TITLE_BLOCK;
   } else if (newMailBlockType === MAIL_BLOCK_TYPES.CONTENT_BLOCK) {
-    newMailBlockContent = [ createMailBlock(CONTENT_ITEM_TYPE.MAIL_TEXT_BLOCK, 0) ];
+    newMailBlockContent = [ createContentItem(CONTENT_ITEM_TYPE.TEXT_BLOCK, 0) ];
   } else {
     return null;
   }
@@ -44,13 +44,13 @@ function createMailBlock(newMailBlockType, newMailBlockPosition) {
 
 /**
  * Creates new content item object based on provided type and order position.
- * 
+ *
  * Returns `null` if incorrect type provided or position is not number or less than 0.
- * 
+ *
  * @param { string } newContentItemType
- * 
+ *
  * @param { number } newContentItemPosition
- * 
+ *
  * @returns { { position: number, type: string, content: string | Array | null, id: string } | null }
  */
 function createContentItem(newContentItemType, newContentItemPosition) {
@@ -61,7 +61,7 @@ function createContentItem(newContentItemType, newContentItemPosition) {
   let newContentItemContent = null;
 
   if (newContentItemType === CONTENT_ITEM_TYPE.TEXT_BLOCK) {
-    newContentItemContent = [ createTextBlock(TEXT_BLOCK_TYPE.TEXT_PART_BLOCK) ];
+    newContentItemContent = [ createTextBlock(TEXT_BLOCK_TYPE.TEXT_PART_BLOCK, 0) ];
   } else if (newContentItemType === CONTENT_ITEM_TYPE.SMALL_TITLE_BLOCK) {
     newContentItemContent = CONTENT_ITEM_DEFAULT_VALUE.SMALL_TITLE_BLOCK;
   } else if (newContentItemType === CONTENT_ITEM_TYPE.IMAGE_BLOCK) {
@@ -82,13 +82,13 @@ function createContentItem(newContentItemType, newContentItemPosition) {
 
 /**
  * Creates new text block object based on provided type and order position.
- * 
+ *
  * Returns `null` if incorrect type provided or position is not number or less than 0.
- * 
+ *
  * @param { string } newTextBlockType
- * 
+ *
  * @param { number } newTextBlockPosition
- * 
+ *
  * @returns { { position: number, type: string, content: string | object, id: string } | null }
  */
 function createTextBlock(newTextBlockType, newTextBlockPosition) {
