@@ -12,14 +12,17 @@ export default {
   name: "json-preview",
 
   props: {
-    mail: { type: Object, required: true },
+    mailBlocks: { 
+      type: Array, 
+      required: true, 
+    },
   },
 
   emits: [ "close-preview" ],
 
   computed: {
     prettyFormatedMail() {
-      return JSON.stringify(this.mail.blocks, null, 2);
+      return JSON.stringify(this.mailBlocks, null, 2);
     },
   },
 
