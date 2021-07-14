@@ -97,7 +97,7 @@ export default {
      * Emits to parent component, that provided mail block content must be changed to new content.
      */
     emitUpdateMailBlockContent(blockToUpdate, newContent) {
-      this.$emit("update-mail-block-position", blockToUpdate, newContent);
+      this.$emit("update-mail-block-content", blockToUpdate, newContent);
     },
 
     /**
