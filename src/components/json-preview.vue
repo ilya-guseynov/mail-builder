@@ -3,7 +3,7 @@
     <div class="json-preview__inner">
       <pre>{{ prettyFormatedMail }}</pre>
     </div>
-    <button class="json-preview__close-button" @click="closePreview">X</button>
+    <button class="json-preview__close-button" @click="emitClosePreview">X</button>
   </div>
 </template>
 
@@ -23,13 +23,19 @@ export default {
   ],
 
   computed: {
+    /**
+     * Mail blocks from props as string with 2 whitespaces formating.
+     */
     prettyFormatedMail() {
       return JSON.stringify(this.mailBlocks, null, 2);
     },
   },
 
   methods: {
-    closePreview() {
+    /**
+     * Emits to parent component, that current preview must be closed.
+     */
+    emitClosePreview() {
       this.$emit("close-preview");
     },
   },
