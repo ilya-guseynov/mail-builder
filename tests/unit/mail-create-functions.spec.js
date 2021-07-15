@@ -2,15 +2,12 @@ import { v4 as uuidV4 } from "uuid";
 import {
   createMailBlock,
   createContentItem,
-  createTextBlock,
 } from "../../src/mail-create-functions";
 import {
   MAIL_BLOCK_TYPES,
   MAIL_BLOCK_DEFAULT_VALUES,
   CONTENT_ITEM_TYPE,
   CONTENT_ITEM_DEFAULT_VALUE,
-  TEXT_BLOCK_TYPE,
-  TEXT_BLOCK_DEFAULT_VALUE,
 } from "../../src/constants";
 
 const testPosition = 1;
