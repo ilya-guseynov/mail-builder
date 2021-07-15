@@ -114,7 +114,6 @@ export default {
 <style lang="scss" scoped>
 .mail-workspace {
   width: 100%;
-  margin-top: 300px;
 
   &__no-blocks-message {
     text-align: center;
