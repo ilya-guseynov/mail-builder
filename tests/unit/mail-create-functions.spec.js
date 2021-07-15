@@ -114,47 +114,4 @@ describe("mail-create-functions.js", () => {
       });
     });
   });
-
-  describe("createTextBlock", () => {
-    it("returns null if provided position is not a number", () => {
-      Object.values(TEXT_BLOCK_TYPE).forEach(textBlockType => {
-        const testTextBlock = createTextBlock(textBlockType, "not a number");
-        expect(testTextBlock).toBeNull();
-      });
-    });
-
-    it("returns null if provided position is less than 0", () => {
-      Object.values(TEXT_BLOCK_TYPE).forEach(textBlockType => {
-        const testTextBlock = createTextBlock(textBlockType, -1);
-        expect(testTextBlock).toBeNull();
-      });
-    });
-
-    it("returns null if provided type is not correct", () => {
-      const testTextBlock = createTextBlock("not a type", testPosition);
-      expect(testTextBlock).toBeNull();
-    });
-
-    it("returns object with unique id, provided postion and provided type if position and type are correct", () => {
-      Object.values(TEXT_BLOCK_TYPE).forEach(textBlockType => {
-        const testTextBlock = createTextBlock(textBlockType, testPosition);
-
-        expect(testTextBlock.id).toEqual(testUuid);
-        expect(testTextBlock.position).toEqual(testPosition);
-        expect(testTextBlock.type).toEqual(textBlockType);
-      });
-    });
-
-    describe("returns object with correct contnet for provided type", () => {
-      it("returns a string with default value as content if it is text part block", () => {
-        const testTextPartBlock = createTextBlock(TEXT_BLOCK_TYPE.TEXT_PART_BLOCK, testPosition);
-        expect(testTextPartBlock.content).toEqual(TEXT_BLOCK_DEFAULT_VALUE.TEXT_PART_BLOCK);
-      });
-
-      it("returns on object with two string with default values as content if it is text link block", () => {
-        const testTextLinkBlock = createTextBlock(TEXT_BLOCK_TYPE.TEXT_LINK_BLOCK, testPosition);
-        expect(testTextLinkBlock.content).toEqual(TEXT_BLOCK_DEFAULT_VALUE.TEXT_LINK_BLOCK);
-      });
-    });
-  });
 });

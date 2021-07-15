@@ -16,21 +16,9 @@ const CONTENT_ITEM_TYPE = {
 };
 
 const CONTENT_ITEM_DEFAULT_VALUE = {
+  TEXT_BLOCK: "Новый текст",
   SMALL_TITLE_BLOCK: "Новый маленький заголовок",
   IMAGE_BLOCK: "https://medialeaks.ru/wp-content/uploads/2017/10/catbread-03-600x400.jpg",
-};
-
-const TEXT_BLOCK_TYPE = {
-  TEXT_PART_BLOCK: "TEXT_PART_BLOCK",
-  TEXT_LINK_BLOCK: "TEXT_LINK_BLOCK",
-};
-
-const TEXT_BLOCK_DEFAULT_VALUE = {
-  TEXT_PART_BLOCK: "Текст",
-  TEXT_LINK_BLOCK: {
-    text: "Текст ссылки",
-    link: "https://rtd.rt.com",
-  },
 };
 
 export { 
@@ -38,6 +26,4 @@ export {
   MAIL_BLOCK_DEFAULT_VALUES, 
   CONTENT_ITEM_TYPE, 
   CONTENT_ITEM_DEFAULT_VALUE,
-  TEXT_BLOCK_TYPE,
-  TEXT_BLOCK_DEFAULT_VALUE,
 };

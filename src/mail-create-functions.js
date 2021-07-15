@@ -59,7 +59,7 @@ function createContentItem(newContentItemType, newContentItemPosition) {
   let newContentItemContent = null;
 
   if (newContentItemType === CONTENT_ITEM_TYPE.TEXT_BLOCK) {
-    newContentItemContent = [ createTextBlock(TEXT_BLOCK_TYPE.TEXT_PART_BLOCK, 0) ];
+    newContentItemContent = CONTENT_ITEM_DEFAULT_VALUE.TEXT_BLOCK;
   } else if (newContentItemType === CONTENT_ITEM_TYPE.SMALL_TITLE_BLOCK) {
     newContentItemContent = CONTENT_ITEM_DEFAULT_VALUE.SMALL_TITLE_BLOCK;
   } else if (newContentItemType === CONTENT_ITEM_TYPE.IMAGE_BLOCK) {
@@ -78,37 +78,4 @@ function createContentItem(newContentItemType, newContentItemPosition) {
   };
 }
 
-/**
- * Creates new text block object based on provided type and order position.
- *
- * Returns `null` if incorrect type provided or position is not number or less than 0.
- *
- * @param { string } newTextBlockType
- * @param { number } newTextBlockPosition
- *
- * @returns { { position: number, type: string, content: string | object, id: string } | null }
- */
-function createTextBlock(newTextBlockType, newTextBlockPosition) {
-  if (typeof newTextBlockPosition !== "number" || newTextBlockPosition < 0) {
-    return null;
-  }
-
-  let newTextBlockContent = null;
-
-  if (newTextBlockType === TEXT_BLOCK_TYPE.TEXT_PART_BLOCK) {
-    newTextBlockContent = TEXT_BLOCK_DEFAULT_VALUE.TEXT_PART_BLOCK;
-  } else if (newTextBlockType === TEXT_BLOCK_TYPE.TEXT_LINK_BLOCK) {
-    newTextBlockContent = TEXT_BLOCK_DEFAULT_VALUE.TEXT_LINK_BLOCK;
-  } else {
-    return null;
-  }
-
-  return {
-    id: uuidV4(),
-    position: newTextBlockPosition,
-    type: newTextBlockType,
-    content: newTextBlockContent,
-  };
-}
-
-export { createMailBlock, createContentItem, createTextBlock };
+export { createMailBlock, createContentItem };
