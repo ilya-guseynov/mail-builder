@@ -1,7 +1,7 @@
 <template>
-  <component 
-    :is="currentContentItemComponent" 
-    :content-item="contentItem" 
+  <component
+    :is="currentContentItemComponent"
+    :content-item="contentItem"
     @content-update="emitContentUpdate"
   ></component>
 </template>
@@ -15,8 +15,8 @@ export default {
   name: "content-item-wrapper",
 
   props: {
-    contentItem: { 
-      type: Object, 
+    contentItem: {
+      type: Object,
       required: true,
     },
   },
@@ -47,8 +47,8 @@ export default {
   methods: {
     /**
      * Emits to parent component, that content must be update with new data.
-     * 
-     * @param { string | Array } newContent 
+     *
+     * @param { string | Array } newContent
      */
     emitContentUpdate(newContent) {
       this.$emit("content-update", this.contentItem, newContent);

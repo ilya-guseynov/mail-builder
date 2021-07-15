@@ -3,9 +3,9 @@
     <tbody>
       <tr>
         <td>
-          <span 
-            style="display: block; border: 2px solid transparent; text-align: center; font-weight: bold;" 
-            v-if="!contentFocused" 
+          <span
+            style="display: block; border: 2px solid transparent; text-align: center; font-weight: bold;"
+            v-if="!contentFocused"
             @click="startEditing"
           >{{ content }}</span>
           <input
