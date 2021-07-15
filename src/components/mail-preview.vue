@@ -40,8 +40,6 @@ export default {
      * Set new Json Preview show status.
      * 
      * @param { boolean } newActiveStatus
-     * 
-     * @returns { void }
      */
     setJsonPreviewStatus(newActiveStatus) {
       this.jsonPreviewActive = newActiveStatus;
