@@ -24,13 +24,12 @@ html, body {
 }
 
 .app {
-  min-height: 100vh;
-  padding-top: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   &__mail-builder-container {
+    min-height: 100vh;
     width: 100%;
   }
 }

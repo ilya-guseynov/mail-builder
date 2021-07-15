@@ -150,6 +150,7 @@ export default {
 <style lang="scss" scoped>
 .mail-builder {
   width: 100%;
+  margin-top: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
