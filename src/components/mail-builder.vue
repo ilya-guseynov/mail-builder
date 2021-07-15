@@ -9,6 +9,7 @@
         @update-mail-block-position="updateMailBlockPosition"
       ></mail-workspace>
     </div>
+    <button class="mail-builder__clear-button" @click="clearMailBlocks">Очистить</button>
     <mail-preview :mailBlocks="mailBlocks"></mail-preview>
   </div>
 </template>
@@ -127,6 +128,14 @@ export default {
     },
 
     /**
+     * Set mail blocks to its initial state.
+     */
+    clearMailBlocks() {
+      this.mailBlocks = [];
+      this.saveMailBlocksToLocalStorage();
+    },
+
+    /**
      * Saves current status of mail blocks to local storage.
      */
     saveMailBlocksToLocalStorage() {
@@ -162,6 +171,24 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+  }
+
+  &__clear-button {
+    position: fixed;
+    top: 20px;
+    right: 100px;
+    padding-bottom: 5px;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    border-bottom: 1px solid transparent;
+    transition: all .5s;
+
+    &:hover {
+      border-bottom: 1px solid gray;
+    }
   }
 }
 </style>
