@@ -160,6 +160,7 @@ export default {
 .mail-builder {
   width: 100%;
   margin-top: 200px;
+  margin-bottom: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
