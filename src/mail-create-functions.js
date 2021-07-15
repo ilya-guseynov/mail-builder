@@ -14,7 +14,6 @@ import {
  * Returns `null` if incorrect type provided or position is not number or less than 0.
  *
  * @param { string } newMailBlockType
- *
  * @param { number } newMailBlockPosition
  *
  * @returns { { id: string, position: number, type: string, content: string | Array } | null }
@@ -48,7 +47,6 @@ function createMailBlock(newMailBlockType, newMailBlockPosition) {
  * Returns `null` if incorrect type provided or position is not number or less than 0.
  *
  * @param { string } newContentItemType
- *
  * @param { number } newContentItemPosition
  *
  * @returns { { position: number, type: string, content: string | Array | null, id: string } | null }
@@ -86,7 +84,6 @@ function createContentItem(newContentItemType, newContentItemPosition) {
  * Returns `null` if incorrect type provided or position is not number or less than 0.
  *
  * @param { string } newTextBlockType
- *
  * @param { number } newTextBlockPosition
  *
  * @returns { { position: number, type: string, content: string | object, id: string } | null }
