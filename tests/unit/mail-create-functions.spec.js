@@ -95,7 +95,7 @@ describe("mail-create-functions.js", () => {
     describe("returns object with correct contnet for provided type", () => {
       it("returns an array of text blocks with one text part block as content if it is text block", () => {
         const testTextBlock = createContentItem(CONTENT_ITEM_TYPE.TEXT_BLOCK, testPosition);
-        expect(testTextBlock.content[0].type).toEqual(TEXT_BLOCK_TYPE.TEXT_PART_BLOCK);
+        expect(testTextBlock.content).toEqual(CONTENT_ITEM_DEFAULT_VALUE.TEXT_BLOCK);
       });
 
       it("returns a string with default value as content if it is small title block", () => {
