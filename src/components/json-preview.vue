@@ -19,7 +19,7 @@ export default {
   },
 
   emits: [ 
-    "close-preview" 
+    "close-preview",
   ],
 
   computed: {
