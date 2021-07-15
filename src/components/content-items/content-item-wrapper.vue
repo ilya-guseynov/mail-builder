@@ -8,6 +8,7 @@
 
 <script>
 import ContentItemSmallTitle from "./content-item-small-title";
+import ContentItemImageBlock from "./content-item-image-block";
 import ContentItemDivider from "./content-item-divider";
 import ContentItemUnknown from "./content-item-unknown";
 import { CONTENT_ITEM_TYPE } from "../../constants";
@@ -36,7 +37,7 @@ export default {
       } else if (this.contentItem.type === CONTENT_ITEM_TYPE.SMALL_TITLE_BLOCK) {
         return ContentItemSmallTitle;
       } else if (this.contentItem.type === CONTENT_ITEM_TYPE.IMAGE_BLOCK) {
-        return ContentItemUnknown;
+        return ContentItemImageBlock;
       } else if (this.contentItem.type === CONTENT_ITEM_TYPE.DIVIDER_BLOCK) {
         return ContentItemDivider;
       } else {
