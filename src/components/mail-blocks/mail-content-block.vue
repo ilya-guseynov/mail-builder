@@ -73,7 +73,8 @@ export default {
     /**
      * Emits to parent component, that content must be updated with new data.
      *
-     * @param { Array | string } newContent
+     * @param { object } contentItemToUpdate
+     * @param { string } newItemContent
      */
     emitContentUpdate(contentItemToUpdate, newItemContent) {
       const newMailBlockContent = [...this.mailBlock.content];

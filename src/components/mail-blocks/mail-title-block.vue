@@ -50,6 +50,8 @@ export default {
   methods: {
     /**
      * Emits to parent component, that content must be updated with new data.
+     *
+     * @param { string } newContent
      */
     emitContentUpdate(newContent) {
       this.$emit("content-update", newContent);
