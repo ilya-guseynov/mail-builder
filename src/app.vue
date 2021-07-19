@@ -23,6 +23,10 @@ html, body {
   margin: 0;
 }
 
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .app {
   display: flex;
   flex-direction: column;
