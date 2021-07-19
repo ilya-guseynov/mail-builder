@@ -31,7 +31,6 @@ export default {
 
   data() {
     return {
-      contentFocused: false,
       editorInitOptions: {
         height: 150,
         menubar: false,
@@ -64,23 +63,6 @@ export default {
      */
     emitContentUpdate(newContent) {
       this.$emit("content-update", newContent);
-    },
-
-    /**
-     * Changes editing status to shows input element instead of span and focuses on this input.
-     */
-    startEditing() {
-      this.contentFocused = true;
-      this.$nextTick(function() {
-        this.$refs.title.focus();
-      });
-    },
-
-    /**
-     * Changes editing status to show span element instead of input.
-     */
-    stopEditing() {
-      this.contentFocused = false;
     },
   },
 };
