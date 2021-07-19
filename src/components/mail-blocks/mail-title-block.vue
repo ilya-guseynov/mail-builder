@@ -35,7 +35,7 @@ export default {
       editorInitOptions: {
         height: 150,
         menubar: false,
-        toolbar: 'formatselect | bold italic | alignleft aligncenter alignright',
+        toolbar: "formatselect | bold italic | alignleft aligncenter alignright",
       },
     };
   },
