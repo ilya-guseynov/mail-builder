@@ -50,6 +50,9 @@ export default {
       },
     },
 
+    /**
+     * Returns Tiny api key from .env file.
+     */
     tinyApiKey() {
       return process.env.VUE_APP_TINY_API_KEY;
     },
