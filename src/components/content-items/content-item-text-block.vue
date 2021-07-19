@@ -2,39 +2,29 @@
   <table class="content-item-text-block" style="width:100%;">
     <tbody>
       <tr>
-        <td v-if="editor && editing" class="content-item-text-block__editing">
-          <div class="content-item-text-block__buttons-container">
-            <div class="content-item-text-block__add-container">
-              <div class="content-item-text-block__add-text">Выделите текст и нажмите</div>
-              <button 
-                class="content-item-text-block__button" 
-                :class="{ 'is-active': editor.isActive('link') }"
-                @click="setLink" 
-              >Добавить ссылку</button>
-            </div>
-            <button class="content-item-text-block__button" @click="stopEditing">Сохранить</button>
-          </div>
-          <editor-content :editor="editor"/>
+        <td v-if="editing">
+          <editor
+            :apiKey="tinyApiKey"
+            :init="editorInitOptions"
+            v-model="content"
+            placeholder="Введите текст..."
+          >
+          </editor>
         </td>
-        <td v-else @click="startEditing" v-html="contentItem.content"></td>
+        <td v-else v-html="content" @click="startEditing" class="content-item-text-block__preview"></td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import { Editor, EditorContent } from "@tiptap/vue-3";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import Link from "@tiptap/extension-link";
-import Bold from "@tiptap/extension-bold";
+import Editor from "@tinymce/tinymce-vue";
 
 export default {
   name: "content-item-text-block",
 
   components: {
-    EditorContent,
+    Editor,
   },
 
   props: {
@@ -45,32 +35,51 @@ export default {
   },
 
   data() {
+    const localStopEditing = this.stopEditing;
+
     return {
-      editor: null,
       editing: false,
+      editorInitOptions: {
+        menubar: false,
+        min_height: 500,
+        statusbar: false,
+        plugins: [
+          "advlist autolink lists link image charmap print preview anchor",
+          "searchreplace visualblocks code fullscreen",
+          "insertdatetime media table paste imagetools wordcount"
+        ],
+        toolbar1: "link | bullist numlist | CustomSaveButton",
+        toolbar2: "bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify",
+        fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
+        setup(editor) {
+          editor.ui.registry.addButton('CustomSaveButton', {
+            text: 'Сохранить',
+            onAction() {
+              localStopEditing();
+            }
+          });
+        },
+      },
     };
   },
 
-  mounted() {
-    const onUpdateHandler = newContent => this.emitContentUpdate(newContent);
-
-    this.editor = new Editor({
-      content: this.contentItem.content,
-      extensions: [
-        Document,
-        Paragraph,
-        Text,
-        Bold,
-        Link,
-      ],
-      onUpdate({ editor }) {
-        onUpdateHandler(editor.getHTML());
+  computed: {
+    content: {
+      get() {
+        return this.contentItem.content;
       },
-    });
-  },
 
-  beforeUnmount() {
-    this.editor.destroy();
+      set(newValue) {
+        this.emitContentUpdate(newValue);
+      },
+    },
+
+    /**
+     * Returns Tiny api key from .env file.
+     */
+    tinyApiKey() {
+      return process.env.VUE_APP_TINY_API_KEY;
+    },
   },
 
   methods: {
@@ -86,11 +95,6 @@ export default {
      */
     startEditing() {
       this.editing = true;
-      this.$nextTick(function() {
-        setTimeout(() => {
-          this.editor.commands.focus();
-        }, 0);
-      });
     },
 
     /**
@@ -99,50 +103,18 @@ export default {
     stopEditing() {
       this.editing = false;
     },
-
-    /**
-     * Set link to a part of text.
-     */
-    setLink() {
-      const url = window.prompt("URL");
-
-      this.editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
-    },
   },
 };
 </script>
 
 <style lang="scss">
 .content-item-text-block {
-  &__editing {
-    background: white;
-  }
-
-  &__buttons-container {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__add-container {
-    display: flex;
-    align-items: center;
-  }
-
-  &__add-text {
-    margin-right: 10px;
-  }
-
-  &__button {}
-
-  & p {
-    word-break: break-all;
+  &__preview p {
+    font-size: 16px;
+    color: #000000;
+    letter-spacing: 0;
+    line-height: 26px;
+    margin: 0 0 26px 0;
   }
 }
 </style>
