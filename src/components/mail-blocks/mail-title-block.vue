@@ -1,27 +1,27 @@
 <template>
-  <span 
-    style="display: block; border: 2px solid transparent; text-align: center; font-weight: bold;" 
-    v-if="!contentFocused" 
-    @click="startEditing"
-  >{{ content }}</span>
-  <input
-    style="font-family: inherit; width: 100%; outline: none; font-size:inherit; margin: 0; padding:0;"
-    v-else
-    type="text"
-    @blur="stopEditing"
+  <editor
+    :apiKey="tinyApiKey"
+    :inline="true"
+    :init="editorInitOptions"
     v-model="content"
-    ref="title"
   >
+  </editor>
 </template>
 
 <script>
+import Editor from "@tinymce/tinymce-vue";
+
 export default {
   name: "mail-title-block",
+
+  components: {
+    Editor,
+  },
 
   props: {
     mailBlock: {
       type: Object,
-      required: true
+      required: true,
     },
   },
 
@@ -32,6 +32,11 @@ export default {
   data() {
     return {
       contentFocused: false,
+      editorInitOptions: {
+        height: 150,
+        menubar: false,
+        toolbar: 'formatselect | bold italic | alignleft aligncenter alignright',
+      },
     };
   },
 
@@ -44,6 +49,10 @@ export default {
       set(newValue) {
         this.emitContentUpdate(newValue); 
       },
+    },
+
+    tinyApiKey() {
+      return process.env.VUE_APP_TINY_API_KEY;
     },
   },
 
