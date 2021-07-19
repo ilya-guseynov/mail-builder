@@ -1,5 +1,5 @@
 <template>
-  <table style="background:#eeeeee; padding:32px; width:100%;">
+  <table style="background: #EEEEEE;border-radius: 7px;margin-top: 26px;" cellpadding="32" cellspacing="0" width="100%">
     <tbody>
       <tr>
         <td>
