@@ -10,7 +10,7 @@
       ></mail-workspace>
     </div>
     <button class="mail-builder__clear-button" @click="clearMailBlocks">Очистить</button>
-    <mail-preview :mailBlocks="mailBlocks"></mail-preview>
+    <mail-preview :mail-blocks="mailBlocks"></mail-preview>
   </div>
 </template>
 
