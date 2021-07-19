@@ -1,29 +1,33 @@
-# mail-builder
+# Конструктор писем
 
-## Project setup
+### Версии
+```
+node -v = v14.17.0
+yarn -v = 1.22.10
+npm -v = 7.16.0
+```
+
+### Установка пакетов
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Запуск в режиме разработки
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### Сборка проекта
 ```
 yarn build
 ```
 
-### Run your unit tests
+### Запуск юнит тестов
 ```
 yarn test:unit
 ```
 
-### Lints and fixes files
+### Для работы редактора tiny необходимо в корне проекта создать файл .env 
 ```
-yarn lint
+VUE_APP_TINY_API_KEY=тут_апи_ключ_tiny
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
