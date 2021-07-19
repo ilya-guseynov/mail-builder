@@ -1,9 +1,8 @@
 <template>
   <div class="new-content-item-creator" @mouseleave="hideCreationButtonsWithDelay">
     <div class="new-content-item-creator__creation-buttons-container" v-if="creationButtonsShowed">
-      <button class="new-content-item-creator__creation-button" @click="emitCreateSmallTitleContentItem">Маленький заголовок</button>
-      <button class="new-content-item-creator__creation-button" @click="emitCreateImageContentItem">Картика</button>
       <button class="new-content-item-creator__creation-button" @click="emitCreateTextContentItem">Текст</button>
+      <button class="new-content-item-creator__creation-button" @click="emitCreateImageContentItem">Картика</button>
       <button class="new-content-item-creator__creation-button" @click="emitCreateDividerContentItem">Разделитель</button>
     </div>
     <div class="new-content-item-creator__trigger-container" v-else>
@@ -50,13 +49,6 @@ export default {
       setTimeout(() => {
         this.creationButtonsShowed = false;
       }, 200);
-    },
-
-    /**
-     * Emits to parent component, that title block must be created.
-     */
-    emitCreateSmallTitleContentItem() {
-      this.$emit("create-content-item", CONTENT_ITEM_TYPE.SMALL_TITLE_BLOCK, this.position);
     },
 
     /**
