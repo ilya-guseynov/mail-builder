@@ -83,8 +83,6 @@ export default {
     /**
      * Update provided mail block with provided content.
      *
-     * Removes mail block if new content is empty string.
-     *
      * @param { object } blockToUpdate
      * @param { string } blockToUpdate.id
      * @param { string | object | Array } newContent
@@ -93,10 +91,6 @@ export default {
       for (let block of this.mailBlocks) {
         if (block.id === blockToUpdate.id) {
           block.content = newContent;
-
-          if (newContent === "") {
-            this.removeMailBlock(blockToUpdate.position);
-          }
         }
       }
 
