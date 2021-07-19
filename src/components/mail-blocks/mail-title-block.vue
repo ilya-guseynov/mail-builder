@@ -4,6 +4,7 @@
     :inline="true"
     :init="editorInitOptions"
     v-model="content"
+    placeholder="Введите заголовок..."
   >
   </editor>
 </template>
