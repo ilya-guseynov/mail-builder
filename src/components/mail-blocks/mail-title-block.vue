@@ -33,7 +33,6 @@ export default {
   data() {
     return {
       editorInitOptions: {
-        height: 150,
         menubar: false,
         toolbar: "formatselect | bold italic | alignleft aligncenter alignright",
       },
