@@ -6,7 +6,7 @@
           <editor
             :apiKey="tinyApiKey"
             :init="editorInitOptions"
-            v-model="content"
+            v-model="editorValue"
             placeholder="Введите текст..."
           >
           </editor>
@@ -36,9 +36,11 @@ export default {
 
   data() {
     const localStopEditing = this.stopEditing;
+    const localSetContent = this.setContent;
 
     return {
       editing: false,
+      editorValue: this.mailBlock.content,
       editorInitOptions: {
         menubar: false,
         min_height: 500,
@@ -55,6 +57,7 @@ export default {
           editor.ui.registry.addButton('CustomSaveButton', {
             text: 'Сохранить',
             onAction() {
+              localSetContent(editor.getContent());
               localStopEditing();
             }
           });
@@ -70,8 +73,12 @@ export default {
       },
 
       set(newValue) {
-        console.log(newValue);
-        this.emitContentUpdate(newValue.replace("<img", "<img style=\"max-width:100%; height:auto;\""));
+        const newModifiedValue = newValue
+          .replaceAll("<img", "<img style='max-width:100%; height:auto;'")
+          .replaceAll("<p", "<p style='font-size: 16px;color: #000000;letter-spacing: 0;line-height: 26px;margin: 0 0 26px 0;'")
+          .replaceAll("<li", "<li style='font-size: 16px;color: #000000;letter-spacing: 0;line-height: 26px;margin: 0 0 26px 0;'");
+
+        this.emitContentUpdate(newModifiedValue);
       },
     },
 
@@ -91,6 +98,9 @@ export default {
       this.$emit("content-update", newContent);
     },
 
+    /**
+     * Sets to state content new data.
+     */
     setContent(newContent) {
       this.content = newContent;
     },
@@ -111,6 +121,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-</style>
