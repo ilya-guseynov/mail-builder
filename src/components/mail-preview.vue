@@ -4,22 +4,33 @@
       class="mail-preview__preview-trigger" 
       @click="setJsonPreviewStatus(true)"
     >Посмотреть JSON</button>
+    <button 
+      class="mail-preview__preview-trigger" 
+      @click="setMailPreviewStatus(true)"
+    >Посмотреть Итоговый результат</button>
   </div>
   <json-preview 
     v-if="jsonPreviewActive" 
     :mail-blocks="mailBlocks" 
     @close-preview="setJsonPreviewStatus(false)"
   ></json-preview>
+  <mail-result 
+    v-if="mailResultActive" 
+    :mail-blocks="mailBlocks" 
+    @close-preview="setMailPreviewStatus(false)"
+  ></mail-result>
 </template>
 
 <script>
 import JsonPreview from "./json-preview";
+import MailResult from "./mail-result";
 
 export default {
   name: "mail-preview",
 
   components: {
     JsonPreview,
+    MailResult,
   },
 
   props: {
@@ -32,6 +43,7 @@ export default {
   data() {
     return {
       jsonPreviewActive: false,
+      mailResultActive: false,
     };
   },
 
@@ -43,6 +55,15 @@ export default {
      */
     setJsonPreviewStatus(newActiveStatus) {
       this.jsonPreviewActive = newActiveStatus;
+    },
+
+    /**
+     * Set new Mail Result show status.
+     * 
+     * @param { boolean } newActiveStatus
+     */
+    setMailPreviewStatus(newActiveStatus) {
+      this.mailResultActive = newActiveStatus;
     },
   },
 };

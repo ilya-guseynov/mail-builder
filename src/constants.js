@@ -5,22 +5,10 @@ const MAIL_BLOCK_TYPES = {
 
 const MAIL_BLOCK_DEFAULT_VALUES = {
   TITLE_BLOCK: "<p>Новый заголовок</p>",
-};
-
-const CONTENT_ITEM_TYPE = {
-  TEXT_BLOCK: "TEXT_BLOCK",
-  IMAGE_BLOCK: "IMAGE_BLOCK",
-  DIVIDER_BLOCK: "DIVIDER_BLOCK",
-};
-
-const CONTENT_ITEM_DEFAULT_VALUE = {
-  TEXT_BLOCK: "<p>Новый текст</p>",
-  IMAGE_BLOCK: "https://medialeaks.ru/wp-content/uploads/2017/10/catbread-03-600x400.jpg",
+  CONTENT_BLOCK: "<p>Новый Текст</p>",
 };
 
 export { 
-  MAIL_BLOCK_TYPES, 
-  MAIL_BLOCK_DEFAULT_VALUES, 
-  CONTENT_ITEM_TYPE, 
-  CONTENT_ITEM_DEFAULT_VALUE,
+  MAIL_BLOCK_TYPES,
+  MAIL_BLOCK_DEFAULT_VALUES,
 };

@@ -1,36 +1,30 @@
 <template>
-  <table style="background: #EEEEEE;border-radius: 7px;margin-top: 26px;" cellpadding="32" cellspacing="0" width="100%">
+  <table class="mail-content-block" style="background: #EEEEEE;border-radius: 7px;" cellpadding="32" cellspacing="0" width="100%">
     <tbody>
       <tr>
-        <td>
-          <div v-if="!hasContentItems">
-            <new-content-item-creator :position="0" @create-content-item="handleCreateContentItem"></new-content-item-creator>
-            <div>Создайте первый контентный блок выше</div>
-          </div>
-          <div v-else>
-            <div v-for="contentItem in orderedContentItems" :key="contentItem.id">
-              <new-content-item-creator :position="contentItem.position" @create-content-item="handleCreateContentItem"></new-content-item-creator>
-              <content-item-wrapper :content-item="contentItem" @content-update="emitContentUpdate"></content-item-wrapper>
-            </div>
-            <new-content-item-creator :position="contentItemsCount" @create-content-item="handleCreateContentItem"></new-content-item-creator>
-          </div>
+        <td v-if="editing">
+          <editor
+            :apiKey="tinyApiKey"
+            :init="editorInitOptions"
+            v-model="content"
+            placeholder="Введите текст..."
+          >
+          </editor>
         </td>
+        <td v-else v-html="content" @click="startEditing" class="mail-content-block__preview"></td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import NewContentItemCreator from "./new-content-item-creator";
-import ContentItemWrapper from "../content-items/content-item-wrapper";
-import { createContentItem } from "../../mail-create-functions";
+import Editor from "@tinymce/tinymce-vue";
 
 export default {
   name: "mail-content-block",
 
   components: {
-    NewContentItemCreator,
-    ContentItemWrapper,
+    Editor,
   },
 
   props: {
@@ -40,78 +34,83 @@ export default {
     },
   },
 
-  emits: [
-    "content-update",
-  ],
+  data() {
+    const localStopEditing = this.stopEditing;
+
+    return {
+      editing: false,
+      editorInitOptions: {
+        menubar: false,
+        min_height: 500,
+        image_dimensions: false,
+        plugins: [
+          "advlist autolink lists link image charmap print preview anchor hr",
+          "searchreplace visualblocks code fullscreen",
+          "insertdatetime media table paste imagetools wordcount"
+        ],
+        toolbar1: "link | bullist numlist | hr | image|  CustomSaveButton",
+        toolbar2: "bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify",
+        fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
+        setup(editor) {
+          editor.ui.registry.addButton('CustomSaveButton', {
+            text: 'Сохранить',
+            onAction() {
+              localStopEditing();
+            }
+          });
+        },
+      },
+    };
+  },
 
   computed: {
-    /**
-     * Returns content items of mail block from props sorted by their positions.
-     */
-    orderedContentItems() {
-      return [...this.mailBlock.content].sort(
-        (firstContentItem, secondContentItem) => (firstContentItem.position - secondContentItem.position)
-      );
+    content: {
+      get() {
+        return this.mailBlock.content;
+      },
+
+      set(newValue) {
+        console.log(newValue);
+        this.emitContentUpdate(newValue.replace("<img", "<img style=\"max-width:100%; height:auto;\""));
+      },
     },
 
     /**
-     * Returns amount of content items in mail blocks from props.
+     * Returns Tiny api key from .env file.
      */
-    contentItemsCount() {
-      return this.mailBlock.content.length;
-    },
-
-    /**
-     * Returns status if mail block from props contain any content items.
-     */
-    hasContentItems() {
-      return this.mailBlock.content.length > 0;
+    tinyApiKey() {
+      return process.env.VUE_APP_TINY_API_KEY;
     },
   },
 
   methods: {
     /**
      * Emits to parent component, that content must be updated with new data.
-     *
-     * @param { object } contentItemToUpdate
-     * @param { string } newItemContent
      */
-    emitContentUpdate(contentItemToUpdate, newItemContent) {
-      const newMailBlockContent = [...this.mailBlock.content];
+    emitContentUpdate(newContent) {
+      this.$emit("content-update", newContent);
+    },
 
-      for (let contentItem of newMailBlockContent) {
-        if (contentItem.id === contentItemToUpdate.id) {
-          contentItem.content = newItemContent;
-        }
-      }
-
-      this.$emit("content-update", newMailBlockContent);
+    setContent(newContent) {
+      this.content = newContent;
     },
 
     /**
-     * Emits to parent component that content must be updated with new item, if its type is correct.
-     *
-     * Also increases positions of items below new position by 1.
-     *
-     * @param { string } newContentItemType
-     * @param { position } newContentItemPosition
+     * Changes editing status to show editor and focus on it.
      */
-    handleCreateContentItem(newContentItemType, newContentItemPosition) {
-      const newContentItem = createContentItem(newContentItemType, newContentItemPosition);
+    startEditing() {
+      this.editing = true;
+    },
 
-      if (newContentItem) {
-        const newMailBlockContent = [...this.mailBlock.content];
-
-        for (let contentItem of newMailBlockContent) {
-          if (contentItem.position >= newContentItemPosition) {
-            contentItem.position += 1;
-          }
-        }
-
-        newMailBlockContent.push(newContentItem);
-        this.$emit("content-update", newMailBlockContent);
-      }
+    /**
+     * Changes editing status to hide editor and show just content.
+     */
+    stopEditing() {
+      this.editing = false;
     },
   },
 };
 </script>
+
+<style lang="scss">
+</style>
