@@ -12,6 +12,7 @@
 
 <script>
 import { MAIL_BLOCK_TYPES } from '../constants';
+
 export default {
   name: "new-block-creator",
 
