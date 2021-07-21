@@ -1,5 +1,5 @@
 <template>
-  <table style="width:100%; margin:0 0 26px 0;">
+  <table style="margin-top: 26px;" cellspacing="0" width="100%">
     <tbody>
       <tr>
         <td v-html="mailBlock.content"></td>

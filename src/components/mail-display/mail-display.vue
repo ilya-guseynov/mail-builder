@@ -3,7 +3,7 @@
     <tbody>
       <tr>
         <td>
-          <mail-display-block v-for="mailBlock in mailBlocks" :key="mailBlock.id" :mail-block="mailBlock"></mail-display-block>
+          <mail-display-block v-for="mailBlock in orderedMailBlocks" :key="mailBlock.id" :mail-block="mailBlock"></mail-display-block>
         </td>
       </tr>
     </tbody>
@@ -24,6 +24,17 @@ export default {
     mailBlocks: {
       type: Array,
       required: false,
+    },
+  },
+
+  computed: {
+    /**
+     * Returns mail blocks sorted by their positions.
+     */
+    orderedMailBlocks() {
+      return [...this.mailBlocks].sort(
+        (firstMailBlock, secondMailBlock) => (firstMailBlock.position - secondMailBlock.position)
+      );
     },
   },
 };
