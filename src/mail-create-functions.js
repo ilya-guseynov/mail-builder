@@ -22,6 +22,8 @@ function createMailBlock(newMailBlockType, newMailBlockPosition) {
     newMailBlockContent = MAIL_BLOCK_DEFAULT_VALUES.TITLE_BLOCK;
   } else if (newMailBlockType === MAIL_BLOCK_TYPES.CONTENT_BLOCK) {
     newMailBlockContent = MAIL_BLOCK_DEFAULT_VALUES.CONTENT_BLOCK;
+  } else if (newMailBlockType === MAIL_BLOCK_TYPES.HEADER_BLOCK) {
+    newMailBlockContent = MAIL_BLOCK_DEFAULT_VALUES.HEADER_BLOCK;
   } else {
     return null;
   }

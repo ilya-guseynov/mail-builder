@@ -9,6 +9,7 @@
 <script>
 import MailTitleBlock from "./mail-title-block";
 import MailContentBlock from "./mail-content-block";
+import MailHeaderBlock from "./mail-header-block";
 import MailUnknownBlock from './mail-unknown-block';
 import { MAIL_BLOCK_TYPES } from "../../constants";
 
@@ -31,6 +32,8 @@ export default {
         return MailTitleBlock;
       } else if (this.mailBlock.type === MAIL_BLOCK_TYPES.CONTENT_BLOCK) {
         return MailContentBlock;
+      } else if (this.mailBlock.type === MAIL_BLOCK_TYPES.HEADER_BLOCK) {
+        return MailHeaderBlock;
       } else {
         return MailUnknownBlock;
       }

@@ -3,6 +3,7 @@
     <div class="new-block-creator__creation-buttons-container" v-if="creationButtonsShowed">
       <button class="new-block-creator__creation-button" @click="emitCreateTitleBlock">Заголовок</button>
       <button class="new-block-creator__creation-button" @click="emitCreateContentBlock">Контент</button>
+      <button class="new-block-creator__creation-button" @click="emitCreateHeaderBlock">Шапка</button>
     </div>
     <div class="new-block-creator__trigger-container" v-else>
       <button class="new-block-creator__trigger" @click="showCreationButtons">+</button>
@@ -62,6 +63,13 @@ export default {
      */
     emitCreateContentBlock() {
       this.$emit("create-mail-block", MAIL_BLOCK_TYPES.CONTENT_BLOCK, this.position);
+    },
+
+    /**
+     * Emits to parent component, that header block must be created.
+     */
+    emitCreateHeaderBlock() {
+      this.$emit("create-mail-block", MAIL_BLOCK_TYPES.HEADER_BLOCK, this.position);
     },
   },
 };
