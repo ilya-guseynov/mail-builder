@@ -54,7 +54,6 @@ export default {
     width: 900px;
     max-height: 90vh;
     display: flex;
-    align-items: center;
     justify-content: center;
     overflow: scroll;
   }
