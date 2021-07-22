@@ -4,7 +4,8 @@
 
 <script>
 import MailDisplayTitle from "./mail-display-title";
-import mailDisplayContent from './mail-display-content';
+import MailDisplayContent from './mail-display-content';
+import MailDisplayHeader from "./mail-display-header";
 import { MAIL_BLOCK_TYPES } from '../../constants';
 
 export default {
@@ -22,7 +23,9 @@ export default {
       if (this.mailBlock.type === MAIL_BLOCK_TYPES.TITLE_BLOCK) {
         return MailDisplayTitle;
       } else if (this.mailBlock.type === MAIL_BLOCK_TYPES.CONTENT_BLOCK) {
-        return mailDisplayContent;
+        return MailDisplayContent;
+      } else if (this.mailBlock.type === MAIL_BLOCK_TYPES.HEADER_BLOCK) {
+        return MailDisplayHeader;
       }
 
       return null;
