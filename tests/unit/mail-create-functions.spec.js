@@ -28,7 +28,7 @@ describe("mail-create-functions.js", () => {
       expect(testMailBlock).toBeNull();
     });
 
-    it("returns object with unique id, provided postion and provided type if position and type are correct", () => {
+    it("returns object with unique id, provided position and provided type if position and type are correct", () => {
       Object.values(MAIL_BLOCK_TYPES).forEach(mailBlockType => {
         const testMailBlock = createMailBlock(mailBlockType, testPosition);
 
@@ -38,7 +38,7 @@ describe("mail-create-functions.js", () => {
       });
     });
 
-    describe("returns object with correct contnet for provided type", () => {
+    describe("returns object with correct content for provided type", () => {
       it("returns a string with default value as content if it is title block", () => {
         const testTitleBlock = createMailBlock(MAIL_BLOCK_TYPES.TITLE_BLOCK, testPosition);
         expect(testTitleBlock.content).toEqual(MAIL_BLOCK_DEFAULT_VALUES.TITLE_BLOCK);
